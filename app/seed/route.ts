@@ -62,8 +62,10 @@ async function seedCustomers() {
     CREATE TABLE IF NOT EXISTS customers (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) NOT NULL,
-      image_url VARCHAR(255) NOT NULL
+      email VARCHAR(255) NULL,
+      mobile NUMERIC(10) NOT NULL,
+      image_url VARCHAR(255) NULL,
+      address VARCHAR(255) NULL
     );
   `;
 

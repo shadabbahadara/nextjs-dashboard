@@ -12,7 +12,9 @@ export type User = {
 export type Customer = {
   id: string;
   name: string;
+  mobile: number;
   email: string;
+  address: string;
   image_url: string;
 };
 

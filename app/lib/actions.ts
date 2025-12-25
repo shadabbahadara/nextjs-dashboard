@@ -117,7 +117,59 @@ export async function authenticate(
   }
 }
 
-export async function deleteCustomer(id: string) {
-  //   await sql`DELETE FROM customers WHERE id = ${id}`;
+const CustomerFormSchema = z.object({
+  id: z.string(),
+  customerName: z.string(),
+  mobile: z.coerce.number(),
+  email: z.string(),
+  address: z.string(),
+  imageUrl: z.string(),
+});
+
+const CreateCustomerFormSchema = CustomerFormSchema.omit({
+  id: true,
+});
+
+export async function createCustomer(formData: FormData) {
+  const { customerName, mobile, email, address, imageUrl } =
+    CreateCustomerFormSchema.parse({
+      customerName: formData.get("customerName"),
+      mobile: formData.get("mobile"),
+      email: formData.get("email"),
+      address: formData.get("address"),
+      imageUrl: "/imageurl",
+    });
+
+  await sql`
+    INSERT INTO customers (name, mobile, email, address, image_url)
+    VALUES (${customerName}, ${mobile}, ${email}, ${address}, ${imageUrl})
+  `;
+
   revalidatePath("/dashboard/customers");
+  redirect("/dashboard/customers");
+}
+
+export async function updateCustomer(id: string, formData: FormData) {
+  const { customerName, mobile, email, address, imageUrl } =
+    CreateCustomerFormSchema.parse({
+      customerName: formData.get("customerName"),
+      mobile: formData.get("mobile"),
+      email: formData.get("email"),
+      address: formData.get("address"),
+      imageUrl: "/customers/male.png",
+    });
+
+  await sql`
+    UPDATE customers
+    SET name = ${customerName}, mobile = ${mobile}, email = ${email}, address  = ${address}, image_url = ${imageUrl}
+    WHERE id = ${id}
+  `;
+
+  revalidatePath("/dashboard/customers");
+  redirect("/dashboard/customers");
+}
+
+export async function deleteCustomer(id: string) {
+    await sql`SELECT * FROM customers WHERE id = ${id}`;
+  // revalidatePath("/dashboard/customers");
 }
