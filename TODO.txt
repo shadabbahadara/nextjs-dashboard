@@ -1,3 +1,5 @@
 TODO
 =======
-> update customer search for mobile, address, email
+> add pageination links
+> add test catalogue
+> update invoice form to include customer search, customer registeration, test search.
